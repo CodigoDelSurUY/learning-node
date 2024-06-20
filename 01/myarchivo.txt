@@ -1,0 +1,4 @@
+This is the content of a dummy file we use
+for
+testing
+and will be loaded by the parseador.js
