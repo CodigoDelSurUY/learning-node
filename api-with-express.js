@@ -1,5 +1,20 @@
 const express = require('express')
 const jwt = require("jsonwebtoken");
+const { Pool } = require('pg');
+const myDB = require('./DB.js')
+const User = require('./models/user')
+const Album = require('./models/album')
+const Artist = require('./models/artist')
+
+//inicializamos base de datos para conectarnos con PG
+
+const pool = new Pool({
+  user: 'xxxx', //your user
+  password: 'xxxx', //your password
+  host: 'xxxx', //localhost
+  port: '5432',
+  database: 'xxxx', //Database name
+})
 
 
 const SECRET = "holaEstoUnaClave"
@@ -74,38 +89,89 @@ DELETE — remove a specific resource by id
 //Por ende aqui lo q estamos diciendo es "si alguien golpea la url localhost:3000/albums,  quiero ejecutar esta funcion ... " 
 app.use('/',middleware1)
 
-app.get('/albums', verifyToken,  middleware2, (req, res , next) => {
-  // en este caso nuestra funcion lo unico q hace es responder , 
-  // a traves del objeto q se pasa por parametro "res" , un JSON q tenemos definido en una variable de constantes
-  // ( en el futuro levantaremos estos datos de la base de datos )
-  res.send(ALBUMS)
-  next()
-} , (req,res,next)=>{
-  console.log("DESPUES")
-  next()
+app.get('/albums', verifyToken,  middleware2, async (req, res , next) => {
+  //Using sequelize's findAll you can do queries over the table related to the model
+  //in this case we return everything by not providing any parameter in the find all
+  let allAlbums = await Album.findAll()
+
+    //if we would want we can iterate over allAlbums and do stuff with each entity
+
+    res.send(allAlbums)
+
+    next()
+
 })
 
 
+app.get('/artists', verifyToken, async (req, res,next) => {
+  //Using sequelize's findAll you can do queries over the table related to the model
+  //we inclde the Albums too by using include
+  let allArtists = await Artist.findAll({
+    
+    include : {
+      model : Album,
+      as : "albums"
+    }
+    /*
+    where : {
+      //fields of Artist to match with
+      name : "Metallica"
+    }
+    */
+  })
 
-app.get('/artists', verifyToken, (req, res,next) => {
-  console.log("ARTISTAS")
-  //lo mismo q con la ruta "/albums" pero con otro constante q tiene datos de los artistas
-  res.send(ARTISTS)
-  next()
+  /*
+
+    You can apply a WHERE clause to filter by any field related ot the models , even the nested
+  
+    let allArtists = await Artist.findAll({
+    
+      include : {
+        model : Album,
+        as : "albums",
+        where : {
+          title : 'The number of the beast'
+        }
+      }
+    })
+  
+  */
+
+    res.send(allArtists)
+    next()
 })
 
 //cuando el cliente hace un request a POST de una ruta, en este caso /artists la funcion q se ejecuta debe encargarse de INSERTAR en la base de datos un recurso
 //los datos de dicho recurso podran ser leidos desde el parametro "req", en este caso req.body
 
 
-app.post('/artists', (req, res) => {
-  //aqui no estamos insertando nada aun , lo haremos cuando puedamos tener nuestra base de datos
-  let body = req.body
-  console.log("BODY",body)
-  res.send({ insertado : "ok" , theBody : body})
+app.post('/artists', async (req, res,next) => {
+  //we create an Artist entity through sequelize's create function
+  try{
+    let body = req.body
+    let created = await Artist.create(body)
+    res.send({ inserted : "ok" , created })
+  }catch(e){
+    next(e)
+  }
+  
 })
 
-//passport 
+app.post('/albums', async (req, res,next) => {
+  //we create an Album entity through sequelize's create function
+  //we should not care about linking artists and albums as the artistId is provided in the body
+  try{
+    let body = req.body
+    let created = await Album.create(body)
+    res.send({ inserted : "ok" , created })
+  }catch(e){
+    next(e)
+  }
+  
+})
+
+
+
 app.post('/login', (req, res) => {
  
   
@@ -134,32 +200,6 @@ app.post('/login', (req, res) => {
 
 app.use('/',despues)
 
-//constantes hardcodeadas q simulan ser nuestra base de datos
-const ALBUMS = [{
-  title : "The number of the beast",
-  artist : 1,
-  year : 1982,
-  id : 1001
-},
-{
-    title : "Black album",
-    artist : 2,
-    year : 1988,
-    id : 1002
-}]
-
-const ARTISTS = [{
-    name : "Iron Maiden",
-    isBand : true,
-    country : "England",
-    id : 1
-},
-{
-    name : "Metallica",
-    isBand : true,
-    country : "USA",
-    id : 2 
-}]
 
 const USERS = [{
   username : "andres",
