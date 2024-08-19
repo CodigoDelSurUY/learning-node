@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "99407360-542b-4b78-aafa-afa5858355b9",
+		"name": "LEARNING_NODE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6382378"
+	},
+	"item": [
+		{
+			"name": "LOGIN",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" : \"facu\",\n    \"password\" : \"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET ALL ALBUMS",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhY3UiLCJpYXQiOjE3MjM1NjM5NDcsImV4cCI6MTcyMzU2NzU0N30.wlA5udThel7X3UAIc01McwQP4BVqBzHCTI59uoLuCWM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/albums",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"albums"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET ALL ARTISTS",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhY3UiLCJpYXQiOjE3MjM1NjM5NDcsImV4cCI6MTcyMzU2NzU0N30.wlA5udThel7X3UAIc01McwQP4BVqBzHCTI59uoLuCWM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/artists",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"artists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE ARTIST",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhY3UiLCJpYXQiOjE3MjM1NjM5NDcsImV4cCI6MTcyMzU2NzU0N30.wlA5udThel7X3UAIc01McwQP4BVqBzHCTI59uoLuCWM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\" : \"Dua Lipa\",\n    \"isBand\" : false,\n    \"country\" : \"UK\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/artists",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"artists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE ALBUM",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhY3UiLCJpYXQiOjE3MjM1NjM5NDcsImV4cCI6MTcyMzU2NzU0N30.wlA5udThel7X3UAIc01McwQP4BVqBzHCTI59uoLuCWM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"title\" : \"Radical Optimisim\",\n      \"year\" : 2024,\n      \"artistId\" : 13\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/albums",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"albums"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
