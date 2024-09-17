@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express')
 const jwt = require("jsonwebtoken");
 const { Pool } = require('pg');
@@ -9,11 +10,11 @@ const Artist = require('./models/artist')
 //inicializamos base de datos para conectarnos con PG
 
 const pool = new Pool({
-  user: 'xxxx', //your user
-  password: 'xxxx', //your password
-  host: 'xxxx', //localhost
-  port: '5432',
-  database: 'xxxx', //Database name
+  user: process.env.DB_USERNAME, //your user
+  password: process.env.DB_PASSWORD, //your password
+  host: process.env.DB_HOST, //localhost
+  port: process.env.DB_PORT,
+  database: process.env.DB_DATABASE, //Database name
 })
 
 
@@ -26,7 +27,7 @@ const app = express()
 //necesario para poder parsear JSON que nuestros clientes envien en el body del request
 app.use( express.json() );
 
-const port = 3000
+const port = process.env.PORT || 3000;
 
 const middleware1 = function(req,res,next){
   try{
