@@ -20,13 +20,12 @@ const pool = new Pool({
 
 const SECRET = "holaEstoUnaClave"
 
-//es el objeto principal q nos probee express con un monton de funciones para administrar nuestra API 
+//es el objeto principal q nos provee express con un monton de funciones para administrar nuestra API 
 // listen, get, post , put .. etc 
 const app = express()
 
 //necesario para poder parsear JSON que nuestros clientes envien en el body del request
 app.use( express.json() );
-
 const port = process.env.PORT || 3000;
 
 const middleware1 = function(req,res,next){
@@ -156,6 +155,11 @@ app.post('/artists', async (req, res,next) => {
     next(e)
   }
   
+})
+
+//Define a simple endpoint that returns the actual port used
+app.get('/port', (req, res) => {
+  res.send({ port: port })
 })
 
 app.post('/albums', async (req, res,next) => {
